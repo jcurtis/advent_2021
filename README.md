@@ -4,14 +4,20 @@
 
 Advent of Code in Rust
 
-## Build
+## Dependencies
 
-`cargo build`
+```shell
+cargo install cargo-aoc
+```
 
 ## Test
 
-`cargo test`
+```shell
+cargo test
+```
 
 ## Run
 
-`cargo run --bin day01`
+```shell
+cargo aoc -d 1
+```
