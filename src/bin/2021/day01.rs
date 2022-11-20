@@ -1,5 +1,7 @@
-fn main() {
-    let input = advent::parse::parse_file_integers("input/2021/day01.txt");
+use advent::parse;
+
+pub fn run() {
+    let input = parse::parse_file_integers("input/2021/input01.txt");
 
     let answer1 = part_1::solve(&input);
     println!("Solve for day 1 part 1: {answer1}");
