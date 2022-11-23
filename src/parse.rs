@@ -6,14 +6,12 @@ pub fn parse_i32(s: &str) -> i32 {
 }
 
 pub fn input_to_integer_vec(input: &str) -> Vec<i32> {
-    let lines = input.trim().lines().map(parse_i32);
-    Vec::from_iter(lines)
+    input.trim().lines().map(parse_i32).collect()
 }
 
 pub fn read_file(file_name: &str) -> String {
     let path = path::Path::new(file_name);
-    let contents = fs::read_to_string(path).expect("Error reading file");
-    contents
+    fs::read_to_string(path).expect("Error reading file")
 }
 
 #[cfg(test)]

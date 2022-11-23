@@ -2,12 +2,11 @@ use crate::parse;
 
 #[aoc_generator(day1)]
 pub fn input_generator(input: &str) -> Vec<i32> {
-    let input = parse::input_to_integer_vec(input);
-    input
+    parse::input_to_integer_vec(input)
 }
 
 #[aoc(day1, part1)]
-pub fn part_1(input: &Vec<i32>) -> i32 {
+pub fn part_1(input: &[i32]) -> i32 {
     let mut count = 0;
     for (i, num) in input.iter().enumerate() {
         if i == 0 {
@@ -16,7 +15,7 @@ pub fn part_1(input: &Vec<i32>) -> i32 {
 
         let prev = input.get(i - 1).unwrap();
         if num > prev {
-            count = count + 1;
+            count += 1;
         }
     }
     count

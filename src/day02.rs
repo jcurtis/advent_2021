@@ -14,14 +14,13 @@ fn parse_instruction(instruction: &str) -> (Action, i32) {
         "down" => Action::Down,
         _ => Action::None,
     };
-    let count: i32 = split.next().unwrap().parse().unwrap();
+    let count = split.next().unwrap().parse().unwrap();
     (action, count)
 }
 
 #[aoc_generator(day2)]
 pub fn input_generator(input: &str) -> Vec<(Action, i32)> {
-    let instructions = input.lines().map(parse_instruction);
-    Vec::from_iter(instructions)
+    input.lines().map(parse_instruction).collect()
 }
 
 #[aoc(day2, part1)]
@@ -31,9 +30,9 @@ pub fn part_1(input: &Vec<(Action, i32)>) -> i32 {
 
     for (action, count) in input {
         match action {
-            Action::Forward => hor = hor + count,
-            Action::Up => depth = depth - count,
-            Action::Down => depth = depth + count,
+            Action::Forward => hor += count,
+            Action::Up => depth -= count,
+            Action::Down => depth += count,
             _ => {}
         }
     }
@@ -50,14 +49,14 @@ pub fn part_2(input: &Vec<(Action, i32)>) -> i32 {
     for (action, count) in input {
         match action {
             Action::Forward => {
-                hor = hor + count;
-                depth = depth + (aim * count);
+                hor += count;
+                depth += aim * count;
             }
             Action::Up => {
-                aim = aim - count;
+                aim -= count;
             }
             Action::Down => {
-                aim = aim + count;
+                aim += count;
             }
             _ => {}
         }
