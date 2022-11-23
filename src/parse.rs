@@ -1,7 +1,7 @@
 use std::fs;
 use std::path;
 
-fn parse_i32(s: &str) -> i32 {
+pub fn parse_i32(s: &str) -> i32 {
     s.parse().unwrap()
 }
 

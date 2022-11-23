@@ -87,14 +87,14 @@ mod tests {
 
     #[test]
     fn part_1_sample() {
-        let input = read_file("test_input/2021/sample02.txt");
+        let input = read_file("test_input/input02.txt");
         let input = super::input_generator(&input);
         assert_eq!(super::part_1(&input), 150);
     }
 
     #[test]
     fn part_2_sample() {
-        let input = read_file("test_input/2021/sample02.txt");
+        let input = read_file("test_input/input02.txt");
         let input = super::input_generator(&input);
         assert_eq!(super::part_2(&input), 900);
     }
