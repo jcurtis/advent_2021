@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, iter::zip};
 
 use itertools::Itertools;
 
@@ -58,32 +58,54 @@ fn part_1(input: &Input) -> usize {
         .len()
 }
 
-fn line_range(input: &Line) -> Vec<Coord> {
-    let mut res = vec![];
-
-    if input.from.0 == input.to.0 {
-        let range = if input.from.1 <= input.to.1 {
-            (input.from.1..=input.to.1).collect_vec()
-        } else {
-            (input.to.1..=input.from.1).rev().collect_vec()
-        };
-
-        for i in range {
-            res.push((input.from.0, i));
-        }
-    } else if input.from.1 == input.to.1 {
-        let range = if input.from.0 <= input.to.0 {
-            (input.from.0..=input.to.0).collect_vec()
-        } else {
-            (input.to.0..=input.from.0).rev().collect_vec()
-        };
-
-        for i in range {
-            res.push((i, input.from.1));
+#[aoc(day5, part2)]
+fn part_2(input: &Input) -> usize {
+    let mut grid = HashMap::new();
+    for line in input {
+        let range = line_range(&line);
+        for coord in range {
+            let val: i32 = match grid.get(&coord) {
+                Some(i) => i + 1,
+                None => 1,
+            };
+            grid.insert(coord, val);
         }
     }
 
-    res
+    grid.into_iter()
+        .filter(|(_, count)| *count >= 2)
+        .collect_vec()
+        .len()
+}
+
+fn line_range(input: &Line) -> Vec<Coord> {
+    if input.from.0 == input.to.0 {
+        let mut res = vec![];
+        for i in get_range(input.from.1, input.to.1) {
+            res.push((input.from.0, i));
+        }
+        return res;
+    } else if input.from.1 == input.to.1 {
+        let mut res = vec![];
+        for i in get_range(input.from.0, input.to.0) {
+            res.push((i, input.from.1));
+        }
+        return res;
+    } else {
+        let range_x = get_range(input.from.0, input.to.0);
+        let range_y = get_range(input.from.1, input.to.1);
+
+        let zip = zip(range_x, range_y);
+        return zip.collect_vec();
+    }
+}
+
+fn get_range(from: i32, to: i32) -> Vec<i32> {
+    if from <= to {
+        (from..=to).collect_vec()
+    } else {
+        (to..=from).rev().collect_vec()
+    }
 }
 
 fn is_perpendicular(input: &Line) -> bool {
@@ -101,6 +123,13 @@ mod tests {
         let input = read_file("test_input/input05.txt");
         let input = input_generator(&input);
         assert_eq!(part_1(&input), 5);
+    }
+
+    #[test]
+    fn test_part_2() {
+        let input = read_file("test_input/input05.txt");
+        let input = input_generator(&input);
+        assert_eq!(part_2(&input), 12);
     }
 
     #[test]
@@ -132,6 +161,20 @@ mod tests {
         };
         let range = line_range(&line);
         assert_eq!(range, vec![(5, 2), (4, 2), (3, 2)]);
+
+        let line = Line {
+            from: (0, 0),
+            to: (3, 3),
+        };
+        let range = line_range(&line);
+        assert_eq!(range, vec![(0, 0), (1, 1), (2, 2), (3, 3)]);
+
+        let line = Line {
+            from: (3, 0),
+            to: (0, 3),
+        };
+        let range = line_range(&line);
+        assert_eq!(range, vec![(3, 0), (2, 1), (1, 2), (0, 3)]);
     }
 
     #[test]
