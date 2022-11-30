@@ -2,28 +2,26 @@
 fn part_1(input: &str) -> usize {
     let days = 80;
     let mut state: Vec<u32> = input
-        .split(",")
+        .split(',')
         .map(|digit| digit.parse().unwrap())
         .collect();
 
     let mut new_spawn_count = 0;
     for _ in 1..=days {
-        for i in 0..state.len() {
-            match state[i] {
+        for item in state.iter_mut() {
+            match item {
                 0 => {
-                    state[i] = 6;
+                    *item = 6;
                     new_spawn_count += 1;
                 }
                 1..=8 => {
-                    state[i] -= 1;
+                    *item -= 1;
                 }
-                _ => println!("Fish out of water {i}: {}", &state[i]),
+                _ => println!("Fish out of water: {}", &item),
             };
         }
 
-        for _ in 0..new_spawn_count {
-            state.push(8);
-        }
+        state.resize(state.len() + new_spawn_count, 8);
 
         new_spawn_count = 0;
     }
@@ -44,7 +42,7 @@ fn part_2(input: &str) -> u64 {
 fn solve(input: &str, days: usize) -> u64 {
     let mut state = vec![0; 9];
 
-    input.split(",").for_each(|fish| {
+    input.split(',').for_each(|fish| {
         let fish = fish.parse::<usize>().unwrap();
         state[fish] += 1;
     });
@@ -52,7 +50,7 @@ fn solve(input: &str, days: usize) -> u64 {
     for _ in 1..=days {
         let zeroes = state[0];
         state.rotate_left(1);
-        state[6] = state[6] + zeroes;
+        state[6] += zeroes;
     }
 
     state.iter().sum()

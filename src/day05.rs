@@ -23,10 +23,10 @@ fn input_generator(input: &str) -> Input {
             let line = line.split_whitespace().collect::<Vec<&str>>();
 
             let from = line[0];
-            let from = from.split(",").map(parse_i32).collect::<Vec<i32>>();
+            let from = from.split(',').map(parse_i32).collect::<Vec<i32>>();
 
             let to = line[2];
-            let to = to.split(",").map(parse_i32).collect::<Vec<i32>>();
+            let to = to.split(',').map(parse_i32).collect::<Vec<i32>>();
 
             Line {
                 from: (from[0], from[1]),
@@ -40,8 +40,8 @@ fn input_generator(input: &str) -> Input {
 fn part_1(input: &Input) -> usize {
     let mut grid = HashMap::new();
     for line in input {
-        if is_perpendicular(&line) {
-            let range = line_range(&line);
+        if is_perpendicular(line) {
+            let range = line_range(line);
             for coord in range {
                 let val: i32 = match grid.get(&coord) {
                     Some(i) => i + 1,
@@ -62,7 +62,7 @@ fn part_1(input: &Input) -> usize {
 fn part_2(input: &Input) -> usize {
     let mut grid = HashMap::new();
     for line in input {
-        let range = line_range(&line);
+        let range = line_range(line);
         for coord in range {
             let val: i32 = match grid.get(&coord) {
                 Some(i) => i + 1,
@@ -84,19 +84,19 @@ fn line_range(input: &Line) -> Vec<Coord> {
         for i in get_range(input.from.1, input.to.1) {
             res.push((input.from.0, i));
         }
-        return res;
+        res
     } else if input.from.1 == input.to.1 {
         let mut res = vec![];
         for i in get_range(input.from.0, input.to.0) {
             res.push((i, input.from.1));
         }
-        return res;
+        res
     } else {
         let range_x = get_range(input.from.0, input.to.0);
         let range_y = get_range(input.from.1, input.to.1);
 
         let zip = zip(range_x, range_y);
-        return zip.collect_vec();
+        zip.collect_vec()
     }
 }
 
